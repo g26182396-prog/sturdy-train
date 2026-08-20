@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Happy Birthday Zara! 🎂🧸</title>
+    
+    <!-- Clean Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Caveat:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Confetti CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        :root {
+            --gold: #f1c40f;
+            --rose: #e84393;
+            --amber: #e67e22;
+            --cyan: #00cec9;
+            --bg-dark: #0c0d14;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.12);
+            --card-bg: rgba(20, 20, 30, 0.7);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #ffffff;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(232, 67, 147, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(241, 196, 15, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, #11121d 0%, #08080d 100%);
+            min-height: 100vh;
+        }
+
+        #bgCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* ---------------- INTRO SCREEN ---------------- */
+        #introScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #08080d;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 25px;
+            transition: 0.6s ease;
+        }
+
+        .intro-badge {
+            color: var(--gold);
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 15px;
+            border: 1px solid rgba(241, 196, 15, 0.3);
+            padding: 6px 18px;
+            border-radius: 50px;
+            background: rgba(241, 196, 15, 0.08);
+        }
+
+        .intro-title {
+            font-size: clamp(2rem, 6.5vw, 3.5rem);
+            font-weight: 800;
+            background: linear-gradient(45deg, #ffffff, var(--gold), var(--rose));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .intro-btn {
+            background: linear-gradient(45deg, var(--rose), var(--amber));
+            border: none;
+            color: #fff;
+            padding: 15px 38px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 25px rgba(232, 67, 147, 0.4);
+            margin-top: 25px;
+            transition: 0.3s;
+        }
+
+        .intro-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* ---------------- MAIN CONTAINER ---------------- */
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 780px;
+            margin: auto;
+            padding: 40px 18px 80px;
+            text-align: center;
+        }
+
+        .hero-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border);
+            padding: 6px 20px;
+            border-radius: 50px;
+            color: #e0e0e0;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .hero-h1 {
+            font-size: clamp(2.2rem, 6.5vw, 3.6rem);
+            font-weight: 800;
+            line-height: 1.15;
+            background: linear-gradient(45deg, #ffffff, #ffd32a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-sub {
+            font-family: 'Caveat', cursive;
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            color: var(--rose);
+            margin: 6px 0 20px;
+        }
+
+        .punch-quote {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 18px 22px;
+            margin: 20px auto 35px;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: #e2e8f0;
+            font-weight: 400;
+        }
+
+        /* ---------------- SECTION 1: CAKE CUTTING ARENA ---------------- */
+        .cake-cutting-arena {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 30px 18px;
+            margin: 35px 0;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            overflow: hidden;
+        }
+
+        .arena-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+
+        .instruction-box {
+            font-size: 0.95rem;
+            color: #ccc;
+            background: rgba(0, 0, 0, 0.4);
+            display: inline-block;
+            padding: 8px 18px;
+            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 22px;
+        }
+
+        .cake-interact-zone {
+            position: relative;
+            width: 300px;
+            height: 220px;
+            margin: 0 auto 15px;
+            touch-action: none;
+            cursor: grab;
+        }
+
+        .candle-stick {
+            position: absolute;
+            top: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 42px;
+            background: repeating-linear-gradient(45deg, #fff, #fff 5px, var(--rose) 5px, var(--rose) 10px);
+            border-radius: 3px;
+            z-index: 10;
+            cursor: pointer;
+        }
+
+        .candle-flame {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 15px;
+            height: 22px;
+            background: linear-gradient(to top, var(--amber), var(--gold), #ffffff);
+            border-radius: 50% 50% 20% 20%;
+            box-shadow: 0 0 15px #ff793f, 0 0 25px var(--gold);
+            animation: flameFlicker 0.6s infinite alternate;
+        }
+
+        @keyframes flameFlicker {
+            0% { transform: translateX(-50%) scale(1) rotate(-2deg); }
+            100% { transform: translateX(-50%) scale(1.15) rotate(3deg); }
+        }
+
+        .cake-plate {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 280px;
+            height: 18px;
+            background: linear-gradient(to bottom, #dcdde1, #718093);
+            border-radius: 50%;
+        }
+
+        .cake-body-container {
+            position: absolute;
+            bottom: 22px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 220px;
+            height: 130px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .cake-half {
+            width: 110px;
+            height: 100%;
+            position: relative;
+            transition: transform 0.5s ease;
+            overflow: hidden;
+        }
+
+        .cake-half.left {
+            border-radius: 16px 0 0 8px;
+            background: linear-gradient(135deg, #8854d0, #3867d6);
+            border-right: 1.5px dashed rgba(255,255,255,0.4);
+        }
+
+        .cake-half.right {
+            border-radius: 0 16px 8px 0;
+            background: linear-gradient(225deg, #8854d0, #3867d6);
+            border-left: 1.5px dashed rgba(255,255,255,0.4);
+        }
+
+        .frosting-layer {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 32px;
+            background: linear-gradient(to bottom, #fed330, #f7b731);
+            border-radius: 14px 14px 0 0;
+        }
+
+        .cream-filling {
+            position: absolute;
+            top: 60px;
+            width: 100%;
+            height: 12px;
+            background: #ffffff;
+            opacity: 0.9;
+        }
+
+        .cake-body-container.cut .cake-half.left {
+            transform: translateX(-20px) rotate(-3deg);
+        }
+        .cake-body-container.cut .cake-half.right {
+            transform: translateX(20px) rotate(3deg);
+        }
+
+        #knifeTool {
+            position: absolute;
+            width: 50px;
+            height: 85px;
+            pointer-events: none;
+            z-index: 50;
+            display: none;
+            transform: translate(-50%, -50%) rotate(-30deg);
+        }
+
+        .slice-laser-line {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 0%;
+            background: #ffffff;
+            box-shadow: 0 0 12px #fff;
+            z-index: 20;
+            pointer-events: none;
+            transition: height 0.08s linear;
+        }
+
+        .action-hub {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 11px 24px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .action-btn:hover:not(:disabled) {
+            background: #fff;
+            color: #000;
+        }
+        
+        .action-btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        /* ---------------- OOTI VIDURADHU POPUP ---------------- */
+        #feedOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(12px);
+            z-index: 10001;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s ease;
+            padding: 20px;
+        }
+
+        #feedOverlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .feed-box {
+            background: #141522;
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 32px 24px;
+            max-width: 440px;
+            text-align: center;
+            transform: scale(0.9);
+            transition: 0.3s ease;
+        }
+
+        #feedOverlay.active .feed-box {
+            transform: scale(1);
+        }
+
+        /* ---------------- SECTION 2: SIBLING BOND QUIZ ---------------- */
+        .quiz-arena {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 30px 18px;
+            margin: 35px 0;
+            text-align: left;
+        }
+
+        .quiz-score-tracker {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0,0,0,0.3);
+            padding: 12px 18px;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+            margin-bottom: 22px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--gold);
+        }
+
+        .question-card {
+            background: rgba(0,0,0,0.35);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 18px 16px;
+            margin-bottom: 16px;
+            transition: 0.2s;
+        }
+        
+        .question-card:hover {
+            border-color: rgba(255,255,255,0.15);
+        }
+
+        .q-text {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 12px;
+            line-height: 1.45;
+        }
+
+        .opt-list {
+            display: grid;
+            gap: 8px;
+        }
+
+        .quiz-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #d1d5db;
+            padding: 11px 15px;
+            border-radius: 12px;
+            font-size: 0.92rem;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .quiz-btn:hover {
+            background: rgba(255, 255, 255, 0.09);
+            color: #fff;
+        }
+
+        .quiz-btn.correct {
+            background: rgba(46, 204, 113, 0.2) !important;
+            border-color: #2ecc71 !important;
+            color: #2ecc71 !important;
+            font-weight: 600;
+        }
+
+        .quiz-reaction {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #fed330;
+            display: none;
+            padding-left: 4px;
+        }
+
+        /* ---------------- SECTION 3: SIBLING LETTER ---------------- */
+        .wax-letter-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 32px 20px;
+            margin: 35px 0;
+            text-align: center;
+        }
+
+        .wax-seal {
+            width: 65px;
+            height: 65px;
+            background: radial-gradient(circle, #e84393, #b81b6c);
+            border-radius: 50%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            color: #fff;
+            cursor: pointer;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(232, 67, 147, 0.4);
+            transition: 0.3s;
+        }
+        
+        .wax-seal:hover {
+            transform: scale(1.08);
+        }
+
+        .letter-scroll {
+            display: none;
+            background: rgba(10, 10, 16, 0.8);
+            border-left: 3px solid var(--gold);
+            border-radius: 14px;
+            padding: 22px 18px;
+            margin-top: 20px;
+            text-align: left;
+            line-height: 1.8;
+            color: #e2e8f0;
+            font-size: 0.98rem;
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* ---------------- SECTION 4: SURPRISE ZONE ---------------- */
+        .surprise-master-zone {
+            display: none;
+            animation: fadeIn 0.8s ease;
+            margin-top: 40px;
+        }
+
+        .hologram-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(232, 67, 147, 0.12), rgba(0, 206, 201, 0.08));
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 26px 20px;
+            margin: 25px auto;
+            max-width: 440px;
+            text-align: left;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .card-chip {
+            width: 42px;
+            height: 30px;
+            background: linear-gradient(135deg, #f1c40f, #e67e22);
+            border-radius: 6px;
+            margin-bottom: 16px;
+        }
+
+        .card-perks {
+            list-style: none;
+            margin-top: 14px;
+        }
+        
+        .card-perks li {
+            font-size: 0.92rem;
+            margin-bottom: 8px;
+            color: #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card-perks li i {
+            color: var(--gold);
+        }
+
+        .launchpad-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 28px 18px;
+            margin: 30px 0;
+        }
+
+        .launch-btn-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 18px;
+        }
+
+        .rocket-btn {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 11px 18px;
+            border-radius: 25px;
+            font-size: 0.92rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .rocket-btn:hover {
+            background: var(--gold);
+            color: #000;
+            transform: translateY(-2px);
+        }
+
+        footer {
+            margin-top: 50px;
+            font-size: 0.9rem;
+            color: #8395a7;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body id="rootBody">
+
+    <!-- Ambient Floating Stars -->
+    <canvas id="bgCanvas"></canvas>
+
+    <!-- Knife SVG Tool -->
+    <svg id="knifeTool" viewBox="0 0 100 200">
+        <path d="M45,180 L55,180 L55,90 L75,90 L60,10 C55,0 45,0 40,10 L25,90 L45,90 Z" fill="url(#knifeGrad)" stroke="#fff" stroke-width="2"/>
+        <rect x="42" y="110" width="16" height="70" rx="4" fill="#2c3e50"/>
+        <defs>
+            <linearGradient id="knifeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ffffff"/>
+                <stop offset="100%" stop-color="#95a5a6"/>
+            </linearGradient>
+        </defs>
+    </svg>
+
+    <!-- INTRO REVEAL SCREEN -->
+    <div id="introScreen">
+        <div class="intro-badge">
+            <i class="fa-solid fa-cake-candles"></i> Birthday Celebration 🧸
+        </div>
+        <h1 class="intro-title">
+            HAPPY BIRTHDAY<br><span style="color: var(--gold);">ZARA!</span> 🎂
+        </h1>
+        <p style="color: #9ca3af; max-width: 440px; font-size: 1rem; line-height: 1.6;">
+            A small birthday surprise page made with love by your brother Teddy.
+        </p>
+        <button class="intro-btn" onclick="startGrandCelebration()">
+            <i class="fa-solid fa-gift"></i> Open Celebration
+        </button>
+    </div>
+
+    <!-- MAIN APP CONTAINER -->
+    <div class="container">
+        
+        <div class="hero-pill">
+            <i class="fa-solid fa-heart" style="color: var(--rose);"></i> Sister & Best Friend
+        </div>
+
+        <h1 class="hero-h1">Happy Birthday!</h1>
+        <div class="hero-sub">To my sweetest sister Zara ❤️🧸</div>
+
+        <!-- Natural Sibling Quote -->
+        <div class="punch-quote">
+            "Happy Birthday to my favorite sister! Namma evlo thaan sandai pottalum vambu pannalum, end of the day un happiness and success thaan un Teddy-ku eppovum mukkiyam. Have the best year ahead da!" ✨
+        </div>
+
+        <!-- ---------------- SECTION 1: CAKE CUTTING ---------------- -->
+        <div class="cake-cutting-arena">
+            <div class="arena-title">
+                🎂 Birthday Cake
+            </div>
+            <div class="instruction-box" id="cakeHelpText">
+                1. Tap the candle to blow it! 🕯️💨
+            </div>
+
+            <!-- Cake Zone -->
+            <div class="cake-interact-zone" id="cakeZone">
+                <div class="slice-laser-line" id="sliceLine"></div>
+
+                <!-- Candle -->
+                <div class="candle-stick" id="candleStick" onclick="blowCandleAction()">
+                    <div class="candle-flame" id="flameElement"></div>
+                </div>
+
+                <!-- Cake Body -->
+                <div class="cake-body-container" id="cakeBody">
+                    <div class="cake-half left">
+                        <div class="frosting-layer"></div>
+                        <div class="cream-filling"></div>
+                    </div>
+                    <div class="cake-half right">
+                        <div class="frosting-layer"></div>
+                        <div class="cream-filling"></div>
+                    </div>
+                </div>
+
+                <!-- Plate -->
+                <div class="cake-plate"></div>
+            </div>
+
+            <div class="action-hub">
+                <button class="action-btn" id="blowBtn" onclick="blowCandleAction()">
+                    <i class="fa-solid fa-wind"></i> 1. Blow Candle
+                </button>
+                <button class="action-btn" id="feedBtn" onclick="openOotiViduScene()" disabled style="border-color: var(--rose); color: var(--rose);">
+                    <i class="fa-solid fa-cake-candles"></i> 2. First Piece For Zara 🍰
+                </button>
+            </div>
+        </div>
+
+        <!-- Feed Pop-up -->
+        <div id="feedOverlay">
+            <div class="feed-box">
+                <div style="font-size: 3.5rem; margin-bottom: 10px;">🍰😋</div>
+                <h2 style="color: var(--gold); font-size: 1.35rem; margin-bottom: 10px;">
+                    First piece for you, Zara!
+                </h2>
+                <p style="font-size: 0.98rem; line-height: 1.7; color: #d1d5db; margin-bottom: 20px;">
+                    "En kitta irundhu snacks thirudura rights eppovum unakku thaan irukku! May this year bring you good health, lots of smiles, and everything you wish for."
+                </p>
+                <button class="action-btn" onclick="closeOotiViduScene()" style="margin: auto; background: #fff; color: #000;">
+                    Thanks Teddy! 🤝
+                </button>
+            </div>
+        </div>
+
+        <!-- ---------------- SECTION 2: SIBLING BOND QUIZ ---------------- -->
+        <div class="quiz-arena">
+            <div class="quiz-score-tracker">
+                <span><i class="fa-solid fa-circle-question"></i> Teddy & Zara Sibling Quiz</span>
+                <span id="quizScoreDisplay">0 / 10 Completed</span>
+            </div>
+
+            <div id="questionsWrapper">
+
+                <!-- Q1 -->
+                <div class="question-card">
+                    <div class="q-text">1. Teddy un kitta edhaavudhu discuss panna, unoda reaction eppadi irukkum?</div>
+                    <div class="opt-list">
+                        <button class="quiz-btn" onclick="answerQ(this, 1, true)">A) Sariyaana reality check & sweet advice kudupa 👍</button>
+                        <button class="quiz-btn" onclick="answerQ(this, 1, false)">B) Summa bayamuruthuva</button>
+                        <button class="quiz-btn" onclick="answerQ(this, 1, false)">C) Kandukave maata</button>
+                    </div>
+                    <div class="quiz-reaction" id="r1">✨ True! Un advice eppovum helpful-ah irukkum.</div>
+                </div>
+
+                <!-- Q2 -->
+                <div class="question-card">
+                    <div class="q-text">2. Sibling fights vandhaa next enna aagum?</div>
+                    <div class="opt-list">
+                        <button class="quiz-btn" onclick="answerQ(this, 2, false)">A) 1 month pesama iruppom</button>
+                        <button class="quiz-btn" onclick="answerQ(this, 2, true)">B) Konja nerathula automatic-ah normal aagiduvom 🤝</button>
+                        <button class="quiz-btn" onclick="answerQ(this, 2, false)">C) Formal-ah treat pannuvom</button>
+                    </div>
+                    <div class="quiz-reaction" id="r2">😄 Exactly, sandai pottalum we are always cool.</div>
+                </div>
+
+                <!-- Q3 -->
+                <div class="question-card">
+                    <div class="q-text">3. Zara-Teddy kulla oru secret share panna:</div>
+                    <div class="opt-list">
+                        <button class="quiz-btn" onclick="answerQ(this, 3, true)">A) 100% Safe-ah irukkum 🔐</button>
+                        <button class="quiz-btn" onclick="answerQ(this, 3, false)">B) Amma kitta pottu kuduthuduva</button>
+                        <button class="quiz-btn" onclick="answerQ(this, 3, false)">C) Oore therinjidum</button>
+                    </div>
+                    <div class="quiz-reaction" id="r3">🔒 Secret vault safe always!</div>
+                </div>
+
+                <!-- Q4 -->
+                <div class="question-card">
+                    <div class="q-text">4. Zara-kku snacks or treat venumna:</div>
+                    <div class="opt-list">
+                        <button class="quiz-btn" onclick="answerQ(this, 4, false)">A) Strict diet la iruppa</button>
+                        <button class="quiz-btn" onclick="answerQ(this, 4, true)">B) Teddy kitta dharalama demand pannalam 🍫</button>
+                        <button class="quiz-btn" onclick="answerQ(this, 4, false)">C) Kekka maata</button>
+                    </div>
+                    <div class="quiz-reaction" id="r4">😋 You have lifetime snack rights!</div>
+                </div>
+
+                <!-- Q5 -->
+                <div class="question-card">
+                    <div class="q-text">5. Teddy makes any silly mistakes, yaaru scold panna rights irukku?</div>
+                    <div class="opt-list">
+                        <button class="quiz-btn" onclick="answerQ(this, 5, true)">A) Zara-kku thaan full rights irukku 👑</button>
+                        <button class="quiz-btn" onclick="answerQ(this, 5, false)">B) Yaarukkum illa</button>
+                        <button class="quiz-btn" onclick="answerQ(this, 5, false)">C) Outsiders</button>
+                    </div>
+                    <div class="quiz-reaction" id="r5">😂 Yes, full authority granted!</div>
+                </div>
+
+                <!-- Q6 -->
+                <div class="question-card">
+                    <div class="q-text">6. Zara-kku edhaavudhu problem or help theva pattaa:</div>
+                    <div class="opt-list">
+                        <button class="quiz-btn" onclick="answerQ(this, 6, false)">A) Teddy ignore pannuvan</button>
+                        <button class="quiz-btn" onclick="answerQ(this, 6, true)">B) Teddy will always stand by your side and help 🤝</button>
+                        <button class="quiz-btn" onclick="answerQ(this, 6, false)">C) Late reaction</button>
+                    </div>
+                    <div class="quiz-reaction" id="r6">🙌 Always here for you, anytime.</div>
+                </div>
+
+                <!-- Q7 -->
+                <div class="question-card">
+                    <div class="q-text">7. When we both achieve our goals in life:</div>
+                    <div class="opt-list">
+                        <button class="quiz-btn" onclick="answerQ(this, 7, true)">A) We will celebrate big and be proud of each other! 🚀</button>
+                        <button class="quiz-btn" onclick="answerQ(this, 7, false)">B) Just a simple text</button>
+                        <button class="quiz-btn" onclick="answerQ(this, 7, false)">C) Nothing</button>
+                    </div>
+                    <div class="quiz-reaction" id="r7">🎉 Big wins ahead for both of us!</div>
+                </div>
+
+                <!-- Q8 -->
+                <div class="question-card">
+                    <div class="q-text">8. Signature sibling quote:</div>
+                    <div class="opt-list">
+                        <button class="quiz-btn" onclick="answerQ(this, 8, false)">A) "Enakku theriyadhu"</button>
+                        <button class="quiz-btn" onclick="answerQ(this, 8, true)">B) "Enna aanaalum naan irukken da!" ❤️</button>
+                        <button class="quiz-btn" onclick="answerQ(this, 8, false)">C) "No comments"</button>
+                    </div>
+                    <div class="quiz-reaction" id="r8">💪 Simple words, but true bond.</div>
+                </div>
+
+                <!-- Q9 -->
+                <div class="question-card">
+                    <div class="q-text">9. What is Zara's best quality according to Teddy?</div>
+                    <div class="opt-list">
+                        <button class="quiz-btn" onclick="answerQ(this, 9, false)">A) Only sleeping all day</button>
+                        <button class="quiz-btn" onclick="answerQ(this, 9, true)">B) Caring nature, understanding mind, and genuine heart 💖</button>
+                        <button class="quiz-btn" onclick="answerQ(this, 9, false)">C) Only fighting</button>
+                    </div>
+                    <div class="quiz-reaction" id="r9">🌟 100% true!</div>
+                </div>
+
+                <!-- Q10 -->
+                <div class="question-card">
+                    <div class="q-text">10. Teddy's birthday wish for Zara:</div>
+                    <div class="opt-list">
+                        <button class="quiz-btn" onclick="answerQ(this, 10, true)">A) Good health, big achievements, and lots of smiles always! 🎂✨</button>
+                        <button class="quiz-btn" onclick="answerQ(this, 10, false)">B) Just another normal day</button>
+                        <button class="quiz-btn" onclick="answerQ(this, 10, false)">C) Standard copy-paste wish</button>
+                    </div>
+                    <div class="quiz-reaction" id="r10">🎉 10/10 Quiz complete! Have the best year Zara!</div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ---------------- SECTION 3: SIBLING LETTER ---------------- -->
+        <div class="wax-letter-section">
+            <div class="wax-seal" id="waxSealBtn" onclick="breakWaxSeal()">
+                <i class="fa-solid fa-envelope"></i>
+            </div>
+            <h3 style="font-size: 1.25rem; color: #fff; margin-bottom: 6px;">
+                A Short Note From Teddy ✉️
+            </h3>
+            <p style="color: #9ca3af; font-size: 0.92rem;">Tap the envelope to read.</p>
+
+            <div class="letter-scroll" id="letterBody">
+                <p>
+                    <strong>Happy Birthday Zara!</strong><br><br>
+                    Nee en sister-ah irukuradhu really a blessing. Namma evlo thaan vambu panni sandai pottalum, un kitta pesinaale oru nalla comfort and clarity kedaikkum.<br><br>
+                    Life-la un dreams ellaathayum achieve panni, unakku pudicha maari eppovum santhoshama irukanum. Enna help theva pattalum un Teddy eppovum unakku oru solid support-ah iruppen.<br><br>
+                    Stay healthy, keep smiling, and have a fantastic year ahead da!<br><br>
+                    <strong>— With lots of love & care,<br>Teddy 🧸❤️</strong>
+                </p>
+            </div>
+        </div>
+
+        <!-- ---------------- SECTION 4: SURPRISE ZONE ---------------- -->
+        <div class="surprise-master-zone" id="surpriseZone">
+            
+            <div class="hero-pill" style="color: var(--rose); border-color: rgba(232, 67, 147, 0.3);">
+                <i class="fa-solid fa-gift"></i> Sister Perks Unlocked
+            </div>
+
+            <!-- VIP Card -->
+            <div class="hologram-card">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="card-chip"></div>
+                    <i class="fa-solid fa-star" style="font-size: 1.8rem; color: var(--gold);"></i>
+                </div>
+                <h3 style="color: #fff; font-size: 1.2rem; letter-spacing: 0.5px;">
+                    SISTER PRIVILEGE PASS
+                </h3>
+                <p style="font-size: 0.85rem; color: #9ca3af; margin-bottom: 12px;">Cardholder: Zara 🧸</p>
+                
+                <ul class="card-perks">
+                    <li><i class="fa-solid fa-check"></i> Unlimited food & snack claim from Teddy</li>
+                    <li><i class="fa-solid fa-check"></i> 24/7 sibling advice & listening ear</li>
+                    <li><i class="fa-solid fa-check"></i> Full backing and support in all your goals</li>
+                    <li><i class="fa-solid fa-check"></i> Exclusive right to roast & scold Teddy</li>
+                </ul>
+            </div>
+
+            <!-- Fireworks Launchpad -->
+            <div class="launchpad-box">
+                <h3 style="color: #fff; font-size: 1.2rem; margin-bottom: 6px;">
+                    <i class="fa-solid fa-rocket"></i> Send Birthday Wishes
+                </h3>
+                <p style="font-size: 0.92rem; color: #9ca3af;">
+                    Tap any rocket to pop confetti fireworks for Zara!
+                </p>
+
+                <div class="launch-btn-grid">
+                    <button class="rocket-btn" onclick="launchWishRocket('success')">
+                        🚀 Success & Career
+                    </button>
+                    <button class="rocket-btn" onclick="launchWishRocket('joy')">
+                        💖 Smiles & Happiness
+                    </button>
+                    <button class="rocket-btn" onclick="launchWishRocket('health')">
+                        🌟 Good Health & Peace
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <footer>
+            Made with love by Teddy for Zara • Happy Birthday! 🎂🧸
+        </footer>
+
+    </div>
+
+    <!-- ---------------- JAVASCRIPT ENGINE ---------------- -->
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playTone(freq, type = 'sine', duration = 0.25, delay = 0, gainLevel = 0.12) {
+            setTimeout(() => {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                gain.gain.setValueAtTime(gainLevel, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            }, delay * 1000);
+        }
+
+        function playFanfare() {
+            [350, 440, 523, 659].forEach((f, i) => playTone(f, 'triangle', 0.4, i * 0.08, 0.15));
+        }
+
+        function startGrandCelebration() {
+            playFanfare();
+            const intro = document.getElementById('introScreen');
+            intro.style.opacity = '0';
+            setTimeout(() => intro.style.visibility = 'hidden', 600);
+            confetti({ particleCount: 70, spread: 70, origin: { y: 0.6 } });
+        }
+
+        // ---------------- CAKE SLICING ----------------
+        let isCandleBlown = false;
+        let isCakeCut = false;
+        let isDragging = false;
+        let startY = 0;
+        const cakeZone = document.getElementById('cakeZone');
+        const knifeTool = document.getElementById('knifeTool');
+        const sliceLine = document.getElementById('sliceLine');
+
+        function blowCandleAction() {
+            if (isCandleBlown) return;
+            playTone(180, 'sine', 0.3, 0, 0.2);
+            document.getElementById('flameElement').style.display = 'none';
+            isCandleBlown = true;
+            document.getElementById('blowBtn').disabled = true;
+            document.getElementById('cakeHelpText').innerHTML = "2. Drag your finger down through the cake to slice it! 🔪";
+            confetti({ particleCount: 40, spread: 50, origin: { y: 0.5 } });
+        }
+
+        function handleStart(e) {
+            if (!isCandleBlown || isCakeCut) return;
+            isDragging = true;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            startY = clientY;
+            knifeTool.style.display = 'block';
+            updateKnifePos(e);
+        }
+
+        function handleMove(e) {
+            if (!isDragging || isCakeCut) return;
+            updateKnifePos(e);
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            const deltaY = clientY - startY;
+            
+            if (deltaY > 0) {
+                const progress = Math.min(100, (deltaY / 100) * 100);
+                sliceLine.style.height = progress + '%';
+                
+                if (progress >= 85) {
+                    finalizeCakeCut();
+                }
+            }
+        }
+
+        function handleEnd() {
+            if (isDragging && !isCakeCut) {
+                sliceLine.style.height = '0%';
+                knifeTool.style.display = 'none';
+            }
+            isDragging = false;
+        }
+
+        function updateKnifePos(e) {
+            const x = e.touches ? e.touches[0].clientX : e.clientX;
+            const y = e.touches ? e.touches[0].clientY : e.clientY;
+            knifeTool.style.left = x + 'px';
+            knifeTool.style.top = y + 'px';
+        }
+
+        function finalizeCakeCut() {
+            isCakeCut = true;
+            isDragging = false;
+            knifeTool.style.display = 'none';
+            playFanfare();
+
+            document.getElementById('cakeBody').classList.add('cut');
+            document.getElementById('cakeHelpText').innerHTML = "Cake sliced! Tap button below 🍰";
+            document.getElementById('feedBtn').disabled = false;
+
+            confetti({ particleCount: 90, spread: 80, origin: { y: 0.6 } });
+        }
+
+        cakeZone.addEventListener('mousedown', handleStart);
+        window.addEventListener('mousemove', handleMove);
+        window.addEventListener('mouseup', handleEnd);
+
+        cakeZone.addEventListener('touchstart', handleStart, { passive: true });
+        window.addEventListener('touchmove', handleMove, { passive: true });
+        window.addEventListener('touchend', handleEnd);
+
+        function openOotiViduScene() {
+            playFanfare();
+            document.getElementById('feedOverlay').classList.add('active');
+            confetti({ particleCount: 80, spread: 70, origin: { y: 0.5 } });
+        }
+        function closeOotiViduScene() {
+            document.getElementById('feedOverlay').classList.remove('active');
+        }
+
+        // ---------------- QUIZ LOGIC ----------------
+        let completedQuestions = 0;
+        function answerQ(btn, qNum, isCorrect) {
+            const parent = btn.parentElement;
+            if (parent.dataset.answered) return;
+
+            if (isCorrect) {
+                parent.dataset.answered = "true";
+                btn.classList.add('correct');
+                document.getElementById('r' + qNum).style.display = 'block';
+                playTone(523, 'triangle', 0.25, 0, 0.15);
+                completedQuestions++;
+                document.getElementById('quizScoreDisplay').innerText = `${completedQuestions} / 10 Completed`;
+                confetti({ particleCount: 25, spread: 45, origin: { y: 0.7 } });
+            } else {
+                playTone(180, 'sawtooth', 0.15, 0, 0.15);
+                btn.style.borderColor = '#e74c3c';
+                btn.style.color = '#e74c3c';
+            }
+        }
+
+        // ---------------- LETTER UNLOCK ----------------
+        function breakWaxSeal() {
+            playFanfare();
+            document.getElementById('waxSealBtn').style.opacity = '0.4';
+            document.getElementById('waxSealBtn').style.pointerEvents = 'none';
+            document.getElementById('letterBody').style.display = 'block';
+            document.getElementById('surpriseZone').style.display = 'block';
+            
+            confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 } });
+            setTimeout(() => {
+                window.scrollTo({ top: document.getElementById('surpriseZone').offsetTop - 20, behavior: 'smooth' });
+            }, 400);
+        }
+
+        // ---------------- ROCKETS ----------------
+        function launchWishRocket(type) {
+            playFanfare();
+            const colors = type === 'success' ? ['#f1c40f', '#e67e22', '#ffffff'] 
+                        : type === 'joy' ? ['#e84393', '#fd79a8', '#ffffff'] 
+                        : ['#00cec9', '#81ecec', '#ffffff'];
+
+            confetti({
+                particleCount: 140,
+                spread: 100,
+                startVelocity: 50,
+                origin: { y: 0.7 },
+                colors: colors
+            });
+        }
+
+        // ---------------- STARS CANVAS ----------------
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        for (let i = 0; i < 50; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 1.5 + 0.5,
+                color: ['#f1c40f', '#e84393', '#ffffff', '#00cec9'][Math.floor(Math.random() * 4)],
+                speedY: Math.random() * 0.35 + 0.1
+            });
+        }
+
+        function renderStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(s => {
+                s.y -= s.speedY;
+                if (s.y < 0) s.y = canvas.height;
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+                ctx.fillStyle = s.color;
+                ctx.globalAlpha = 0.4;
+                ctx.fill();
+            });
+            requestAnimationFrame(renderStars);
+        }
+        renderStars();
+    </script>
+</body>
+</html>
